@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Tournament</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ tournament.id }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{ tournament.status }}</td>
+            </tr>
+            <tr>
+                <th>Buyin</th>
+                <td>{{ tournament.buyIn }}</td>
+            </tr>
+            <tr>
+                <th>Prizepool</th>
+                <td>{{ tournament.prizePool }}</td>
+            </tr>
+            <tr>
+                <th>Creatorid</th>
+                <td>{{ tournament.creatorId }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ tournament.name }}</td>
+            </tr>
+            <tr>
+                <th>Invitationlink</th>
+                <td>{{ tournament.invitationLink }}</td>
+            </tr>
+            <tr>
+                <th>Logolink</th>
+                <td>{{ tournament.logoLink }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('tournament_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('tournament_edit', { 'id': tournament.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

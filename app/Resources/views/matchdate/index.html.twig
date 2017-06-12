@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Matchdates list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for matchDate in matchDates %}
+            <tr>
+                <td><a href="{{ path('matchdate_show', { 'id': matchDate.id }) }}">{{ matchDate.id }}</a></td>
+                <td>{{ matchDate.date }}</td>
+                <td>{% if matchDate.status %}Yes{% else %}No{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('matchdate_show', { 'id': matchDate.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('matchdate_edit', { 'id': matchDate.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('matchdate_new') }}">Create a new matchDate</a>
+        </li>
+    </ul>
+{% endblock %}

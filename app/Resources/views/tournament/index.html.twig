@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Tournaments list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Status</th>
+                <th>Buyin</th>
+                <th>Prizepool</th>
+                <th>Creatorid</th>
+                <th>Name</th>
+                <th>Invitationlink</th>
+                <th>Logolink</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for tournament in tournaments %}
+            <tr>
+                <td><a href="{{ path('tournament_show', { 'id': tournament.id }) }}">{{ tournament.id }}</a></td>
+                <td>{{ tournament.status }}</td>
+                <td>{{ tournament.buyIn }}</td>
+                <td>{{ tournament.prizePool }}</td>
+                <td>{{ tournament.creatorId }}</td>
+                <td>{{ tournament.name }}</td>
+                <td>{{ tournament.invitationLink }}</td>
+                <td>{{ tournament.logoLink }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('tournament_show', { 'id': tournament.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('tournament_edit', { 'id': tournament.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('tournament_new') }}">Create a new tournament</a>
+        </li>
+    </ul>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Matches list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Team1</th>
+                <th>Team2</th>
+                <th>Score1</th>
+                <th>Score2</th>
+                <th>Tournamentid</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for match in matches %}
+            <tr>
+                <td><a href="{{ path('matches_show', { 'id': match.id }) }}">{{ match.id }}</a></td>
+                <td>{{ match.team1 }}</td>
+                <td>{{ match.team2 }}</td>
+                <td>{{ match.score1 }}</td>
+                <td>{{ match.score2 }}</td>
+                <td>{{ match.tournamentId }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('matches_show', { 'id': match.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('matches_edit', { 'id': match.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('matches_new') }}">Create a new match</a>
+        </li>
+    </ul>
+{% endblock %}

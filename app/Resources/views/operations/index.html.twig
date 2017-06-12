@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Operations list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Amount</th>
+                <th>Senderwalletid</th>
+                <th>Receiverwalletid</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for operation in operations %}
+            <tr>
+                <td><a href="{{ path('operations_show', { 'id': operation.id }) }}">{{ operation.id }}</a></td>
+                <td>{{ operation.amount }}</td>
+                <td>{{ operation.senderWalletId }}</td>
+                <td>{{ operation.receiverWalletId }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('operations_show', { 'id': operation.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('operations_edit', { 'id': operation.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('operations_new') }}">Create a new operation</a>
+        </li>
+    </ul>
+{% endblock %}

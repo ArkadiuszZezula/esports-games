@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Operation</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ operation.id }}</td>
+            </tr>
+            <tr>
+                <th>Amount</th>
+                <td>{{ operation.amount }}</td>
+            </tr>
+            <tr>
+                <th>Senderwalletid</th>
+                <td>{{ operation.senderWalletId }}</td>
+            </tr>
+            <tr>
+                <th>Receiverwalletid</th>
+                <td>{{ operation.receiverWalletId }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('operations_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('operations_edit', { 'id': operation.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

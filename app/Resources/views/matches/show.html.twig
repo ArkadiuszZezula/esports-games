@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Match</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ match.id }}</td>
+            </tr>
+            <tr>
+                <th>Team1</th>
+                <td>{{ match.team1 }}</td>
+            </tr>
+            <tr>
+                <th>Team2</th>
+                <td>{{ match.team2 }}</td>
+            </tr>
+            <tr>
+                <th>Score1</th>
+                <td>{{ match.score1 }}</td>
+            </tr>
+            <tr>
+                <th>Score2</th>
+                <td>{{ match.score2 }}</td>
+            </tr>
+            <tr>
+                <th>Tournamentid</th>
+                <td>{{ match.tournamentId }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('matches_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('matches_edit', { 'id': match.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}
