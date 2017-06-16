@@ -41,7 +41,7 @@ class Team
     /**
      * @var int
      *
-     * @ORM\Column(name="creatorId", type="integer", unique=true)
+     * @ORM\Column(name="creatorId", type="integer", unique=false)
      */
     private $creatorId;
 
@@ -72,6 +72,11 @@ class Team
     private $users;
 
     /**
+     * @ORM\ManyToMany(targetEntity="User", mappedBy="invitingTeams")
+     */
+    private $invitedUsers;
+    
+    /**
      * Many Teams have Many Matches.
      * @ORM\ManyToMany(targetEntity="Matches", inversedBy="teams")
      * @ORM\JoinTable(name="teams_matches")
@@ -84,7 +89,9 @@ class Team
         $this->tournaments = new ArrayCollection();
         $this->wallet = new Wallet();
         $this->users = new ArrayCollection();
+        $this->invitedUsers = new ArrayCollection();
         $this->matches = new ArrayCollection();
+        $this->status = 1;
 
     }
     /**
@@ -341,5 +348,38 @@ class Team
     public function getMatches()
     {
         return $this->matches;
+    }
+
+    /**
+     * Add invitedUsers
+     *
+     * @param \AppBundle\Entity\User $invitedUsers
+     * @return Team
+     */
+    public function addInvitedUser(\AppBundle\Entity\User $invitedUsers)
+    {
+        $this->invitedUsers[] = $invitedUsers;
+
+        return $this;
+    }
+
+    /**
+     * Remove invitedUsers
+     *
+     * @param \AppBundle\Entity\User $invitedUsers
+     */
+    public function removeInvitedUser(\AppBundle\Entity\User $invitedUsers)
+    {
+        $this->invitedUsers->removeElement($invitedUsers);
+    }
+
+    /**
+     * Get invitedUsers
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getInvitedUsers()
+    {
+        return $this->invitedUsers;
     }
 }

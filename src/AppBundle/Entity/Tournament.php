@@ -80,6 +80,8 @@ class Tournament
     public function __construct()
     {
         $this->teams = new ArrayCollection();
+        $this->status = 1;
+        $this->setLogoLink('/images/samplelogo.jpg');
     }
 
     /**

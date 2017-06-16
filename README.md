@@ -1,6 +1,6 @@
 # esports-games
 
-Symfony project.
+Symfony project. - Unfinished yet
 
 Create e-team or join to exist.
 Play matches and save the rusults.

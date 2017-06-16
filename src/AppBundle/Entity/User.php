@@ -43,12 +43,22 @@ class User extends BaseUser
 
     private $teams;
 
+   /**
+    * Many Users have Many Teams.
+    * @ORM\ManyToMany(targetEntity="Team", inversedBy="invitedUsers")
+    * @ORM\JoinTable(name="invitations")
+    */
+
+    private $invitingTeams;
+    
     public function __construct()
     {
         parent::__construct();
         // your own logic
         $this->wallet = new Wallet();
         $this->teams = new ArrayCollection();
+        $this->invitingTeams = new ArrayCollection();
+
         $this->activity = 1;
     }
 
@@ -155,5 +165,38 @@ class User extends BaseUser
     public function getTeams()
     {
         return $this->teams;
+    }
+
+    /**
+     * Add invitingTeams
+     *
+     * @param \AppBundle\Entity\Team $invitingTeams
+     * @return User
+     */
+    public function addInvitingTeam(\AppBundle\Entity\Team $invitingTeams)
+    {
+        $this->invitingTeams[] = $invitingTeams;
+
+        return $this;
+    }
+
+    /**
+     * Remove invitingTeams
+     *
+     * @param \AppBundle\Entity\Team $invitingTeams
+     */
+    public function removeInvitingTeam(\AppBundle\Entity\Team $invitingTeams)
+    {
+        $this->invitingTeams->removeElement($invitingTeams);
+    }
+
+    /**
+     * Get invitingTeams
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getInvitingTeams()
+    {
+        return $this->invitingTeams;
     }
 }
