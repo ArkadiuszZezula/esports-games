@@ -5,8 +5,9 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Operations;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 /**
  * Operation controller.
  *
@@ -37,24 +38,50 @@ class OperationsController extends Controller
      * @Route("/new", name="operations_new")
      * @Method({"GET", "POST"})
      */
-    public function newAction(Request $request)
+    public function newAction($senderWalletId,$receiverWalletId,$amount,$do = null)
     {
-        $operation = new Operation();
-        $form = $this->createForm('AppBundle\Form\OperationsType', $operation);
-        $form->handleRequest($request);
+        $operation = new Operations();
+        $operation->setAmount($amount);
+        $operation->setReceiverWalletId($receiverWalletId);
+        $operation->setSenderWalletId($senderWalletId);
+        $do = $do?:$this->getDoctrine();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($operation);
-            $em->flush();
+        //getting actual wallet amounts for sender and receiver
+        $repository = $do->getRepository('AppBundle:Wallet');
+        $senderAmount = $repository->find($senderWalletId)->getAmount();
+        $receiverAmount = $repository->find($receiverWalletId)->getAmount();
 
-            return $this->redirectToRoute('operations_show', array('id' => $operation->getId()));
+        //check if sender has enough credits in his wallet to conclude operation
+        if ($senderAmount < $amount) {
+            return new Response('Not enough credits in your wallet');
         }
+        $newWalletSender = $do->getRepository('AppBundle:Wallet')->find($senderWalletId);
+        $newWalletSender->setAmount($senderAmount - $amount);
 
-        return $this->render('operations/new.html.twig', array(
-            'operation' => $operation,
-            'form' => $form->createView(),
-        ));
+        $newWalletReceiver = $do->getRepository('AppBundle:Wallet')->find($receiverWalletId);
+        $newWalletReceiver->setAmount($receiverAmount + $amount);
+
+        $do->getManager()->persist($operation);
+        $do->getManager()->flush();
+
+//            $em->persist($operation);
+//            $em->flush();
+//            //geting last operation id
+//            $query = $em->createQuery('SELECT MAX(w.id) FROM AppBundle:Operations w');
+//            $lastOperationId = $query->getResult()[0][1];
+//        //setting variables of last operation details
+//        $repository = $this->getDoctrine()->getRepository('AppBundle:Operations');
+//        $lastOperation = $repository->find($lastOperationId);
+//        $senderWalletId = $lastOperation->getSenderWalletId();
+//        $receiverWalletId = $lastOperation->getReceiverWalletId();
+//        $amount = $lastOperation->getAmount();
+//        //set new values of wallets sender and receiver
+//            $em->flush();
+
+//            return $this->redirectToRoute('operations_show', array('id' => $operation->getId()));
+
+
+        return $amount;
     }
 
     /**
